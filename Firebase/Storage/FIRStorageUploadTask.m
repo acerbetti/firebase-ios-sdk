@@ -86,6 +86,13 @@
       return;
     }
 
+    NSError *contentValidationError;
+    if (![strongSelf isContentToUploadValid:&contentValidationError]) {
+      strongSelf.error = contentValidationError;
+      [strongSelf finishTaskWithStatus:FIRStorageTaskStatusFailure snapshot:strongSelf.snapshot];
+      return;
+    }
+
     strongSelf.state = FIRStorageTaskStateQueueing;
 
     NSMutableURLRequest *request = [strongSelf.baseRequest mutableCopy];
